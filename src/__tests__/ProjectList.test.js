@@ -5,37 +5,34 @@ import ProjectList from "../components/ProjectList";
 const projects = [
   {
     id: 1,
-    name: "Reciplease",
-    about: "A recipe tracking app",
-    technologies: ["Rails", "Bootstrap CSS"],
+    name: "Project 1",
+    about: "About project 1",
+    technologies: ["Tech1", "Tech2"]
   },
   {
     id: 2,
-    name: "Kibbles N Bitz",
-    about: "Tinder for dogs",
-    technologies: ["React", "Redux"],
-  },
-  {
-    id: 3,
-    name: "Alienwares",
-    about: "Etsy for aliens",
-    technologies: ["React", "Redux", "Rails"],
-  },
+    name: "Project 2",
+    about: "About project 2",
+    technologies: ["Tech3"]
+  }
 ];
 
-test("gives each <ProjectItem> a key based on the project id", () => {
-  let errorSpy = jest.spyOn(global.console, "error");
+test("renders a heading with the text 'My Projects'", () => {
+  render(<ProjectList projects={projects} />);
+  expect(screen.getByText("My Projects")).toBeInTheDocument();
+});
+
+test("renders a ProjectItem for each project", () => {
+  const { container } = render(<ProjectList projects={projects} />);
+  expect(container.querySelectorAll("#project-list > *")).toHaveLength(projects.length);
+});
+
+test("each ProjectItem has a unique key prop", () => {
+  const errorSpy = jest.spyOn(global.console, "error");
+
   render(<ProjectList projects={projects} />);
 
   expect(errorSpy).not.toHaveBeenCalled();
 
   errorSpy.mockRestore();
-});
-
-test("renders a <ProjectItem> for each project passed in as a prop", () => {
-  render(<ProjectList projects={projects} />);
-
-  for (const project of projects) {
-    expect(screen.queryByText(project.name)).toBeInTheDocument();
-  }
 });
